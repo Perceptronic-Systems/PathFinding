@@ -18,6 +18,26 @@ body {
   flex-direction: column;
 }
 
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+button {
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: 2rem;
+  font-weight: bold;
+}
+
+#randomize-button {
+  background-color: red;
+}
+
+#solve-button {
+  background-color: green;
+}
+
 #main-canvas {
   width: 75dvh;
   height: 75dvh;
@@ -26,8 +46,86 @@ body {
 }
 
 p {
-  padding: 4rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
   text-align: center;
-  font-size: 14pt;
+  font-size: 16pt;
+  line-height: 2.5rem;
+}
 
+/* Container formatting */
+.toggle-container {
+  margin-top: 3rem;
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  font-family: Arial, sans-serif;
+}
+
+.toggle-label {
+  margin-left: 10px;
+  font-size: 18pt;
+  color: #4197c6; /* Adjusted assuming a dark theme based on canvas colors */
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 22px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .3s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .3s;
+}
+
+/* Checked states */
+input:checked + .slider {
+  background-color: #1df9f5; /* Uses your green grid color */
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #1df9f5;
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 22px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
