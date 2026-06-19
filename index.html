@@ -13,16 +13,9 @@
   <div id="main">
     <div class="column">
       <h1>Path Finding Demo</h1>
-      <div class="row">
+      <div id="device-container">
         <canvas id="main-canvas"></canvas>
-        <div column>
-        <p>Imagine you are pouring water onto a specific tile of a grid, like a checkered floor, and watching it spread
-          out. A flood-fill pathfinding algorithm works exactly like that water: it starts at your beginning point and
-          flows outward, filling every adjacent open tile one by one, step by step. As the "water" expands, it remembers
-          how many steps it took to reach each tile from the start, completely ignoring walls or obstacles it can't flow
-          through. Once the spreading water finally touches your destination tile, the algorithm simply traces the
-          numbers backward—like following a trail of breadcrumbs from the destination back to the source—to reveal the
-          shortest, most direct path through the grid.</p>
+        <div class="column" style="flex-shrink: 1; margin-right: 12dvmin;">
           <div class="toggle-container">
             <label class="switch">
               <input type="checkbox" id="value-toggle">
@@ -30,6 +23,13 @@
             </label>
             <span class="toggle-label">Show Path Values</span>
           </div>
+          <p>Imagine you are pouring water onto a specific tile of a grid, like a checkered floor, and watching it spread
+          out. A flood-fill pathfinding algorithm works exactly like that water: it starts at your beginning point and
+          flows outward, filling every adjacent open tile one by one, step by step. As the "water" expands, it remembers
+          how many steps it took to reach each tile from the start, completely ignoring walls or obstacles it can't flow
+          through. Once the spreading water finally touches your destination tile, the algorithm simply traces the
+          numbers backward—like following a trail of breadcrumbs from the destination back to the source—to reveal the
+          shortest, most direct path through the grid.</p>
         </div>
           
       </div>

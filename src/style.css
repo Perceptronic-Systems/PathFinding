@@ -1,5 +1,12 @@
+html {
+  width: 100vw;
+  height: auto;
+}
+
 body {
-  padding: 3rem;
+  padding: 1rem 12dvmin 1rem 12dvmin;
+  width: 100%;
+  height: 100%;
 }
 
 * {
@@ -39,15 +46,15 @@ button {
 }
 
 #main-canvas {
-  width: 75dvh;
-  height: 75dvh;
+  width: 75dvmin;
+  height: 75dvmin;
   background-color: black;
   margin-top: 2rem;
 }
 
 p {
-  padding-left: 4rem;
-  padding-right: 4rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
   text-align: center;
   font-size: 16pt;
   line-height: 2.5rem;
@@ -128,4 +135,23 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+#device-container {
+  display: flex;
+  flex-direction: row;
+}
+
+ @media (max-width: 700px) {
+  #device-container {
+    flex-direction: column;
+  }
+
+  p {
+    font-size: 12pt;
+    margin-left: 0;
+    padding-left: 0;
+    margin-right: 0;
+    padding-right: 0;
+  }
 }
