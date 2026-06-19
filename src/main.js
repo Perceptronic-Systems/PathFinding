@@ -71,17 +71,20 @@ function determine_random_pos(cell_type) {
     let colliding = true;
     let cell_x = 0;
     let cell_y = 0;
-    while (colliding) {
-        cell_x = Math.round(Math.random() * x_cells - 1);
-        cell_y = Math.round(Math.random() * y_cells - 1);
-        cell_x = Math.min(Math.max(cell_x, 0), x_cells - 1);
-        cell_y = Math.min(Math.max(cell_y, 0), y_cells - 1);
-        if (cells[cell_y][cell_x] && cells[cell_y][cell_x].state === 0) {
+    let attempts = 0;
+
+    while (colliding && attempts < 1000) {
+        attempts++;
+        cell_x = Math.floor(Math.random() * x_cells);
+        cell_y = Math.floor(Math.random() * y_cells);
+        
+        if (cells[cell_y]?.[cell_x] && cells[cell_y][cell_x].state === 0) {
             colliding = false;
             cells[cell_y][cell_x].state = cell_type;
             return [cell_x, cell_y];
         }
     }
+    return [0, 0]; 
 }
 
 function checkCell(x, y, checkValue) {
@@ -104,23 +107,36 @@ function checkLower(nextMove, check_x, check_y, checkValue) {
 }
 
 function generateMap(grid, x, y, p_x, p_y) {
-    let map = [];
     let checkNodes = [{'x': x, 'y': y, 'value': 0}];
     let foundPlayer = false;
+    
+    cells[y][x].value = 0;
+
     while (checkNodes.length > 0) {
-        let newNodes = []
-        checkNodes.forEach(node => {
-            if (foundPlayer || (node.x === p_x && node.y === p_y)) {
+        let newNodes = [];
+        for (let node of checkNodes) {
+            if (node.x === p_x && node.y === p_y) {
                 foundPlayer = true;
-                newNodes = [];
-            } else {
-                cells[node.y][node.x].value = node.value;
-                if (checkCell(node.x, node.y + 1, node.value + 1)) newNodes.push({'x': node.x, 'y': node.y + 1, 'value': node.value + 1});
-                if (checkCell(node.x, node.y - 1, node.value + 1)) newNodes.push({'x': node.x, 'y': node.y - 1, 'value': node.value + 1});
-                if (checkCell(node.x + 1, node.y, node.value + 1)) newNodes.push({'x': node.x + 1, 'y': node.y, 'value': node.value + 1});
-                if (checkCell(node.x - 1, node.y, node.value + 1)) newNodes.push({'x': node.x - 1, 'y': node.y, 'value': node.value + 1});
+                break; 
             }
-        });
+
+            const directions = [
+                {x: node.x, y: node.y + 1},
+                {x: node.x, y: node.y - 1},
+                {x: node.x + 1, y: node.y},
+                {x: node.x - 1, y: node.y}
+            ];
+
+            for (let dir of directions) {
+                let nextValue = node.value + 1;
+                if (checkCell(dir.x, dir.y, nextValue)) {
+                    cells[dir.y][dir.x].value = nextValue;
+                    newNodes.push({'x': dir.x, 'y': dir.y, 'value': nextValue});
+                }
+            }
+        }
+        
+        if (foundPlayer) break;
         checkNodes = newNodes;
     }
     return foundPlayer;
@@ -147,13 +163,18 @@ restart();
 
 function animate() {
     const player_value = cells[player_y][player_x].value;
-    let nextMove = {player_x, player_y, value: player_value}
+    let nextMove = {x: player_x, y: player_y, value: player_value}; 
+    
     nextMove = checkLower(nextMove, player_x, player_y + 1, nextMove.value);
     nextMove = checkLower(nextMove, player_x, player_y - 1, nextMove.value);
     nextMove = checkLower(nextMove, player_x + 1, player_y, nextMove.value);
     nextMove = checkLower(nextMove, player_x - 1, player_y, nextMove.value);
 
     if (player_x !== goal_x || player_y !== goal_y) {
+        if (nextMove.x === player_x && nextMove.y === player_y) {
+            restart();
+            return;
+        }
         move(player_x, player_y, nextMove.x, nextMove.y);
         player_x = nextMove.x;
         player_y = nextMove.y;
